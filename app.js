@@ -1,5 +1,5 @@
 // ========== КОНФИГ ==========
-const API_URL = 'https://script.google.com/macros/s/AKfycbxTecz4RbgoPAW_v_jDLkIwCCbmnevUESHK-lTC8CAWN_TQ3pYKVqM_GFLPLP8s1pRt/exec'; // URL вашего веб-приложения
+const API_URL = 'https://script.google.com/macros/s/ВАШ_ИД/exec'; // ЗАМЕНИТЕ НА ВАШ URL
 
 // ========== СОСТОЯНИЕ ==========
 let currentUser = null;
@@ -11,6 +11,7 @@ function showScreen(id) {
   document.getElementById(id).style.display = 'block';
 }
 
+// Функция вызова API (безопасная для CORS)
 function callApi(action, data) {
   const formData = new URLSearchParams();
   formData.append('action', action);
@@ -48,19 +49,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Логин
+  // ===== Логин =====
   document.getElementById('loginBtn').addEventListener('click', login);
-  document.getElementById('loginPassword').addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+  document.getElementById('loginPassword').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') login();
+  });
 
-  // Отметка
+  // ===== Переключение экранов =====
+  document.getElementById('goToRegisterBtn').addEventListener('click', () => {
+    showScreen('registerScreen');
+    document.getElementById('registerError').textContent = '';
+  });
+  document.getElementById('goToLoginBtn').addEventListener('click', () => {
+    showScreen('loginScreen');
+    document.getElementById('loginError').textContent = '';
+  });
+
+  // ===== Регистрация =====
+  document.getElementById('registerBtn').addEventListener('click', register);
+  document.getElementById('regPasswordConfirm').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') register();
+  });
+
+  // ===== Отметка =====
   document.getElementById('markReadBtn').addEventListener('click', markRead);
 
-  // Топы
+  // ===== Топы =====
   document.querySelectorAll('.topBtn').forEach(btn => {
     btn.addEventListener('click', () => loadTop(btn.dataset.period));
   });
 
-  // Выход
+  // ===== Выход =====
   document.getElementById('logoutBtn').addEventListener('click', logout);
 });
 
@@ -100,16 +119,54 @@ function showMainScreen() {
   document.getElementById('usernameDisplay').textContent = currentUser;
 }
 
+// ========== РЕГИСТРАЦИЯ ==========
+function register() {
+  const username = document.getElementById('regUsername').value.trim();
+  const password = document.getElementById('regPassword').value.trim();
+  const confirm = document.getElementById('regPasswordConfirm').value.trim();
+  const errorEl = document.getElementById('registerError');
+
+  if (!username || !password || !confirm) {
+    errorEl.textContent = 'Заполните все поля';
+    return;
+  }
+  if (password !== confirm) {
+    errorEl.textContent = 'Пароли не совпадают';
+    return;
+  }
+  if (username.length < 3) {
+    errorEl.textContent = 'Имя должно быть не менее 3 символов';
+    return;
+  }
+
+  callApi('register', { username, password })
+    .then(data => {
+      if (data.success) {
+        errorEl.textContent = '';
+        alert('Регистрация успешна! Теперь войдите.');
+        showScreen('loginScreen');
+        document.getElementById('loginUsername').value = username;
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('loginError').textContent = '';
+      } else {
+        errorEl.textContent = data.error || 'Ошибка регистрации';
+      }
+    })
+    .catch(err => {
+      errorEl.textContent = 'Ошибка соединения с сервером';
+    });
+}
+
 // ========== ОТМЕТКА ==========
 function markRead() {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = new Date().toISOString().slice(0, 10);
   callApi('markRead', { username: currentUser, date: today })
     .then(data => {
       const result = document.getElementById('markResult');
       if (data.success) {
         result.textContent = '✅ Отмечено за сегодня!';
         result.style.color = 'green';
-        loadStats(); // обновить статистику
+        loadStats();
       } else {
         result.textContent = '❌ Ошибка: ' + (data.error || 'неизвестная');
         result.style.color = 'red';
