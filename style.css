@@ -16,6 +16,11 @@ input {
   margin: 8px 0;
   box-sizing: border-box;
 }
+#markReadBtn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 button {
   padding: 8px 16px;
   margin: 4px 0;
