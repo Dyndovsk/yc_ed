@@ -1,5 +1,5 @@
 // ========== КОНФИГ ==========
-const API_URL = 'https://script.google.com/macros/s/AKfycbxwNqk-pbCVQ2FxSoiA3fjhcYmxXYiKQ9-QrHLE_XIf1kBMQz2syBeSO_i6UnehOeQ8/exec'; // ЗАМЕНИТЕ НА ВАШ URL
+const API_URL = 'https://script.google.com/macros/s/AKfycbzCgRxV7IhRsBc4hM2p_gZrBu1L4r84DnKjf91bXLriya4ok2J77TscwcYHmnwUGG3j/exec'; // ЗАМЕНИТЕ НА ВАШ URL
 
 // ========== СОСТОЯНИЕ ==========
 let currentUser = null;
