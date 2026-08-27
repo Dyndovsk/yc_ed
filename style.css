@@ -1,0 +1,38 @@
+body {
+  font-family: sans-serif;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+.screen {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+button {
+  padding: 8px 16px;
+  margin: 4px 0;
+  cursor: pointer;
+}
+.error {
+  color: red;
+  margin: 8px 0;
+}
+#stats p {
+  margin: 4px 0;
+}
+#adminPanel {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 6px;
+}
+.topBtn {
+  margin-right: 8px;
+}
