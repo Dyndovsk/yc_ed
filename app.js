@@ -12,12 +12,23 @@ function showScreen(id) {
 }
 
 function callApi(action, data) {
+  const formData = new URLSearchParams();
+  formData.append('action', action);
+  for (let key in data) {
+    formData.append(key, data[key]);
+  }
   return fetch(API_URL, {
     method: 'POST',
-    //mode: 'no-cors', // важно для GAS, но тогда ответ не прочитаешь; лучше использовать режим 'cors' с настройками GAS
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action, ...data })
-  }).then(res => res.json());
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formData
+  })
+  .then(response => response.json())
+  .catch(error => {
+    console.error('Ошибка запроса:', error);
+    throw error;
+  });
 }
 
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
