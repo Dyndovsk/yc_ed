@@ -14,7 +14,7 @@ function showScreen(id) {
 function callApi(action, data) {
   return fetch(API_URL, {
     method: 'POST',
-    mode: 'no-cors', // важно для GAS, но тогда ответ не прочитаешь; лучше использовать режим 'cors' с настройками GAS
+    //mode: 'no-cors', // важно для GAS, но тогда ответ не прочитаешь; лучше использовать режим 'cors' с настройками GAS
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action, ...data })
   }).then(res => res.json());
