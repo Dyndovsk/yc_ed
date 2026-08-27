@@ -1,5 +1,5 @@
 // ========== КОНФИГ ==========
-const API_URL = 'https://script.google.com/macros/s/AKfycbxcUQBPvVuqKSDsEXez8suomS8b9xiE-wJy3qI0zD13ZP3Zc_g6C_HGz7ytB7pva638/exec'; // ЗАМЕНИТЕ НА ВАШ URL
+const API_URL = 'https://script.google.com/macros/s/AKfycbxS7R4_k26NWeJYqilLSBXA_dadDwpNJ3NosqHJxal-zMpIQi-8mo4v7LRNIQ00JCvi/exec';
 
 // ========== СОСТОЯНИЕ ==========
 let currentUser = null;
@@ -9,26 +9,6 @@ let isAdmin = false;
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
   document.getElementById(id).style.display = 'block';
-}
-
-function checkTodayStatus() {
-  callApi('checkToday', { username: currentUser })
-    .then(data => {
-      const btn = document.getElementById('markReadBtn');
-      if (data.success && data.marked) {
-        btn.disabled = true;
-        btn.textContent = '✅ Сегодня уже отмечено';
-        btn.style.backgroundColor = '#ccc';
-        document.getElementById('markResult').textContent = 'Вы уже отметили сегодня!';
-        document.getElementById('markResult').style.color = 'green';
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'Отметить, что прочитал сегодня';
-        btn.style.backgroundColor = '';
-        document.getElementById('markResult').textContent = '';
-      }
-    })
-    .catch(() => {});
 }
 
 // Функция вызова API (безопасная для CORS)
@@ -50,6 +30,24 @@ function callApi(action, data) {
     console.error('Ошибка запроса:', error);
     throw error;
   });
+}
+
+// ========== ПРОВЕРКА СЕГОДНЯШНЕЙ ОТМЕТКИ (скрываем кнопку) ==========
+function checkTodayStatus() {
+  callApi('checkToday', { username: currentUser })
+    .then(data => {
+      const btn = document.getElementById('markReadBtn');
+      const msg = document.getElementById('alreadyMarkedMessage');
+      if (data.success && data.marked) {
+        btn.style.display = 'none';
+        msg.style.display = 'block';
+        document.getElementById('markResult').textContent = '';
+      } else {
+        btn.style.display = 'inline-block';
+        msg.style.display = 'none';
+      }
+    })
+    .catch(() => {});
 }
 
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
@@ -188,7 +186,7 @@ function markRead() {
         result.textContent = '✅ Отмечено за сегодня!';
         result.style.color = 'green';
         loadStats();
-        checkTodayStatus(); // <-- добавить эту строку
+        checkTodayStatus(); // скрываем кнопку, показываем надпись
       } else {
         result.textContent = '❌ Ошибка: ' + (data.error || 'неизвестная');
         result.style.color = 'red';
