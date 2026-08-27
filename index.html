@@ -1,52 +1,63 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Назидания</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Назидания</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <!-- Экран входа -->
-    <div id="loginScreen" class="screen">
-      <h2>Вход</h2>
-      <input type="text" id="loginUsername" placeholder="Имя пользователя">
-      <input type="password" id="loginPassword" placeholder="Пароль">
-      <button id="loginBtn">Войти</button>
-      <div id="loginError" class="error"></div>
-    </div>
-
-    <!-- Главный экран (после входа) -->
-    <div id="mainScreen" class="screen" style="display:none">
-      <div id="userInfo">Привет, <span id="usernameDisplay"></span>!</div>
-      <button id="markReadBtn">Отметить, что прочитал сегодня</button>
-      <div id="markResult"></div>
-
-      <h3>Ваша статистика</h3>
-      <div id="stats">
-        <p>За текущий месяц: <span id="statCurrentMonth">0</span></p>
-        <p>За прошлый месяц: <span id="statPrevMonth">0</span></p>
-        <p>За текущий год: <span id="statCurrentYear">0</span></p>
-        <p>За прошлый год: <span id="statPrevYear">0</span></p>
-        <p>За всё время: <span id="statTotal">0</span></p>
-      </div>
-
-      <!-- Админская панель (видна только админу) -->
-      <div id="adminPanel" style="display:none; margin-top:30px; border-top:1px solid #ccc; padding-top:20px;">
-        <h3>Админ-панель</h3>
-        <div>
-          <button class="topBtn" data-period="month">Топ за месяц</button>
-          <button class="topBtn" data-period="year">Топ за год</button>
-          <button class="topBtn" data-period="alltime">Топ за всё время</button>
+    <div id="app">
+        <!-- Экран входа -->
+        <div id="loginScreen" class="screen">
+            <h2>Вход</h2>
+            <input type="text" id="loginUsername" placeholder="Имя пользователя">
+            <input type="password" id="loginPassword" placeholder="Пароль">
+            <button id="loginBtn">Войти</button>
+            <button id="goToRegisterBtn" style="background: none; border: none; color: blue; cursor: pointer; margin-top: 10px;">Нет аккаунта? Зарегистрироваться</button>
+            <div id="loginError" class="error"></div>
         </div>
-        <div id="topResult"></div>
-      </div>
 
-      <button id="logoutBtn" style="margin-top:20px;">Выйти</button>
+        <!-- Экран регистрации -->
+        <div id="registerScreen" class="screen" style="display:none;">
+            <h2>Регистрация</h2>
+            <input type="text" id="regUsername" placeholder="Имя пользователя">
+            <input type="password" id="regPassword" placeholder="Пароль">
+            <input type="password" id="regPasswordConfirm" placeholder="Повторите пароль">
+            <button id="registerBtn">Зарегистрироваться</button>
+            <button id="goToLoginBtn" style="background: none; border: none; color: blue; cursor: pointer; margin-top: 10px;">Уже есть аккаунт? Войти</button>
+            <div id="registerError" class="error"></div>
+        </div>
+
+        <!-- Главный экран -->
+        <div id="mainScreen" class="screen" style="display:none;">
+            <div id="userInfo">Привет, <span id="usernameDisplay"></span>!</div>
+            <button id="markReadBtn">Отметить, что прочитал сегодня</button>
+            <div id="markResult"></div>
+
+            <h3>Ваша статистика</h3>
+            <div id="stats">
+                <p>За текущий месяц: <span id="statCurrentMonth">0</span></p>
+                <p>За прошлый месяц: <span id="statPrevMonth">0</span></p>
+                <p>За текущий год: <span id="statCurrentYear">0</span></p>
+                <p>За прошлый год: <span id="statPrevYear">0</span></p>
+                <p>За всё время: <span id="statTotal">0</span></p>
+            </div>
+
+            <!-- Админка -->
+            <div id="adminPanel" style="display:none; margin-top:30px; border-top:1px solid #ccc; padding-top:20px;">
+                <h3>Админ-панель</h3>
+                <div>
+                    <button class="topBtn" data-period="month">Топ за месяц</button>
+                    <button class="topBtn" data-period="year">Топ за год</button>
+                    <button class="topBtn" data-period="alltime">Топ за всё время</button>
+                </div>
+                <div id="topResult"></div>
+            </div>
+
+            <button id="logoutBtn" style="margin-top:20px;">Выйти</button>
+        </div>
     </div>
-  </div>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
